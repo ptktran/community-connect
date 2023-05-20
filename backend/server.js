@@ -22,6 +22,18 @@ const userSchema = new mongoose.Schema({
     location: String}
 )
 
+
+// {
+//     "name": "Peter Tran",
+//     "email": "petertran@gmail.com",
+//     "age": 18,
+//     "isFreelancer": true,
+//     "isBusiness": false,
+//     "occupation": "student",
+//     "location": "nova scotia"
+// }
+
+
 const postSchema = new mongoose.Schema({
     title: String, 
     location: String, 
