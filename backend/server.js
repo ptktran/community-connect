@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
 
 
 const postSchema = new mongoose.Schema({
+    author: {
+      name: String,
+      email: String
+    },
     title: String, 
     location: String, 
     date: String, 
@@ -85,6 +89,7 @@ app.get("/User/:id", async (req, res) => {
 
 app.post("/Post/new", async (req, res) => {
     const newPost = new Post({
+        author: req.body.author,
         title: req.body.title, 
         location: req.body.location, 
         date: req.body.date, 
