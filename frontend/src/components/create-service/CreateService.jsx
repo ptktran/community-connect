@@ -1,9 +1,13 @@
 import Navbar from "../Navbar"
 import { Link } from "react-router-dom"
 import UploadPhoto from "../upload-photo/UploadPhoto"
-import React, { useState } from  'react'
+import React, { useState, useEffect } from  'react'
 
 export default function CreateService() {
+  useEffect(() => {
+    document.title = 'Create a service'; // Set the desired title
+  }, []);
+
   const [selectedOption, setSelectedOption] = useState('');
 
   const handleOptionChange = (event) => {

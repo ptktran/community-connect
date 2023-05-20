@@ -1,10 +1,29 @@
 import { Link } from "react-router-dom"
+import LogoutButton from "./LogoutButton";
+import LoginButton from "./LoginButton";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Navbar = () => {
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
+  if (isLoading) {
+    return <div>Loading ...</div>;
+  }
+
+  // return (
+  //   isAuthenticated && (
+  //     <div>
+  //       <img src={user.picture} alt={user.name} />
+  //       <h2>{user.name}</h2>
+  //       <p>{user.email}</p>
+  //     </div>
+  //   )
+  // )
+
   return (
     // <body className="bg-gray-200 h-screen">
       <nav className="bg-white py-2 px-4 w-full flex justify-between items-center">
-        <div className="flex items-center justify-between md:w-1/6">
+        <div className="flex items-center justify-between md:w-fit">
           <Link to="/">
             <a className="flex items-center">
               <img src="src\assets\icons\logo.svg" className="mr-1"></img>
@@ -36,7 +55,22 @@ const Navbar = () => {
           </Link>
           <li><a href="#"><img className="hover:bg-gray-hover transition-color ease duration-150 p-1 rounded-lg" src="src/assets/icons/message.svg" alt="Message"></img></a></li>
           <li><a href="#"><img className="hover:bg-gray-hover transition-color ease duration-150 p-1 rounded-lg" src="src/assets/icons/notification.svg" alt="Notification"></img></a></li>
-          <li><a href="#" className="flex space-x-1 text-sm bg-gray-comps p-2 rounded-lg hover:bg-gray-hover transition-color ease duration-150"><img src="src/assets/icons/user.svg" alt="User"></img><span>Peter Tran</span></a></li>
+          <Link to="/profile">
+            {isAuthenticated && (
+              <li>
+                <a href="#" className="flex space-x-1 text-sm bg-gray-comps p-2 rounded-lg hover:bg-gray-hover transition-color ease duration-150">
+                  {user.picture ? (
+                    <img src={user.picture} className="rounded-full w-6" alt="User"></img>
+                  ) : (
+                    <img src='src/assets/icons/user.svg'></img>
+                  )}
+                  <span>{user.name}</span>
+                </a>
+              </li>
+            )}
+          </Link>
+          <LoginButton />
+          <LogoutButton/>
         </ul>
       </nav>    
     // </body>  

@@ -3,7 +3,6 @@ import React from "react";
 const SignUp = () => {
     return(
         <div class="wrapper">
-
             <div class="flex justify-center mt-20 mb-10">
                 <h2 class="inter font-bold text-[45px]">Tell us more about <span className="hover:text-blue">yourself</span></h2>
             </div>
@@ -30,8 +29,6 @@ const SignUp = () => {
                         <p class="text-neutral-50 font-bold">Next</p>
                     </button>
             </div>
-            
-
         </div>
     )
 }
