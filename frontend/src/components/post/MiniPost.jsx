@@ -1,5 +1,28 @@
 const MiniPost = () => {
 
+    async function postRequest(url, jsonData) {
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(jsonData)
+        };
+        const response = await fetch(url, options);
+        const data = await response.json();
+        return data
+      }
+      
+      async function getRequest(url) {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data
+      }
+
+    // let postsJSON = getRequest("http://localhost:5000/Posts");
+    // let posts = [postsJSON];
+
+
     // the backend should respond an array of posts with attributes more or less given below (could be anything but you also need to change the ui below)
     const posts = [
         {
@@ -57,8 +80,7 @@ const MiniPost = () => {
       },
 
     ]
-
-
+    
     return (
     <>   
         {posts
