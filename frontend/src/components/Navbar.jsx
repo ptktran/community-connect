@@ -5,10 +5,12 @@ const Navbar = () => {
     // <body className="bg-gray-200 h-screen">
       <nav className="bg-white py-2 px-4 w-full flex justify-between items-center">
         <div className="flex items-center justify-between md:w-1/6">
-          <a href="/" className="flex items-center text-lg">
-            <img src="src\assets\icons\logo.svg" className="mr-1"></img>
-            <span className="font-bold">Community</span>Connect
-          </a>
+          <Link to="/">
+            <a className="flex items-center">
+              <img src="src\assets\icons\logo.svg" className="mr-1"></img>
+              <span className="font-bold">Community</span>Connect
+            </a>
+          </Link>
         </div>
         
         {/* Search Bar */}
@@ -26,11 +28,15 @@ const Navbar = () => {
 
         {/* Nav Links */}
         <ul className="flex justify-end items-center space-x-3">
-          <li><a href="#"><button className="bg-gray-comps p-2 rounded-lg hover:bg-gray-hover transition-color ease duration-150">💸 Create service</button></a></li>
-          <li><a href="#"><img className="hover:bg-gray-hover transition-color ease duration-150 p-2 rounded-lg" src="src/assets/icons/add.svg" alt="Add"></img></a></li>
-          <li><a href="#"><img className="hover:bg-gray-hover transition-color ease duration-150 p-2 rounded-lg" src="src/assets/icons/message.svg" alt="Message"></img></a></li>
-          <li><a href="#"><img className="hover:bg-gray-hover transition-color ease duration-150 p-2 rounded-lg" src="src/assets/icons/notification.svg" alt="Notification"></img></a></li>
-          <li><a href="#" className="flex space-x-1 bg-gray-comps p-2 rounded-lg hover:bg-gray-hover transition-color ease duration-150"><img src="src/assets/icons/user.svg" alt="User"></img><span>Peter Tran</span></a></li>
+          <Link to="/create-service">
+            <li><a><button className="bg-gray-comps text-sm p-2 rounded-lg hover:bg-gray-hover transition-color ease duration-150">💸 Create service</button></a></li>
+          </Link> 
+          <Link to="/add-post">
+            <li><a><img className="hover:bg-gray-hover transition-color ease duration-150 p-1 rounded-lg" src="src/assets/icons/add.svg" alt="Add"></img></a></li> 
+          </Link>
+          <li><a href="#"><img className="hover:bg-gray-hover transition-color ease duration-150 p-1 rounded-lg" src="src/assets/icons/message.svg" alt="Message"></img></a></li>
+          <li><a href="#"><img className="hover:bg-gray-hover transition-color ease duration-150 p-1 rounded-lg" src="src/assets/icons/notification.svg" alt="Notification"></img></a></li>
+          <li><a href="#" className="flex space-x-1 text-sm bg-gray-comps p-2 rounded-lg hover:bg-gray-hover transition-color ease duration-150"><img src="src/assets/icons/user.svg" alt="User"></img><span>Peter Tran</span></a></li>
         </ul>
       </nav>    
     // </body>  
