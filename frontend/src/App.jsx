@@ -4,6 +4,7 @@ import AddPost from './components/add-post/AddPost'
 import Landing from './components/landing/Landing'
 import Profile from './components/profile/Profile'
 import SignUp from './components/signup/SignUp'
+import Businesses from './components/businesses/Businesses'
 import CreateService from './components/create-service/CreateService'
 import Home from './components/Home'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -13,10 +14,10 @@ function App() {
     <div className='App'>  
       <Router>
         <Routes>
-          <Route path='/landing' element={ <Landing />}></Route>
           <Route path='/' element={ <Home/> } />
           <Route path='/add-post' element={ <AddPost /> } />
           <Route path='/profile' element={ <Profile /> } />
+          <Route path='/businesses' element={ <Businesses />} />
           <Route path='/signup' element={ <SignUp/>} />
           <Route path='/create-service' element={ <CreateService /> } />
         </Routes>

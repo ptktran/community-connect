@@ -53,8 +53,12 @@ app.post("/User/new", async (req, res) => {
         occupation: req.body.occupation,
         location: req.body.location
     })
-    await newUser.save()
-    res.json(newUser)
+    try {
+      await newUser.save()
+      res.json(newUser)
+    } catch (error) {
+      console.log(error)
+    }
 })
 
 app.get("/Users", async (req, res) => {
