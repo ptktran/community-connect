@@ -1,8 +1,12 @@
 import Navbar from "../Navbar";
 import UploadPhoto from "../upload-photo/UploadPhoto";
 import { Link } from "react-router-dom"
+import React, { useEffect } from 'react'
 
 export default function AddPost() {
+  useEffect(() => {
+    document.title = 'Create a post'
+  }, []);
   return (
     <>
       <div className="bg-gray-200 h-screen">
