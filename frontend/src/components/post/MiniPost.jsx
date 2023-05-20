@@ -64,17 +64,17 @@ const MiniPost = () => {
         {posts
         ? (<div>
             {posts.map((post, index) => 
-                  <div key={index} className="flex m-auto bg-white max-w-3xl rounded-lg overflow-hidden drop-shadow-md my-5">
+                  <div key={index} className="flex m-auto bg-white max-w-2xl rounded-lg overflow-hidden drop-shadow-md my-5">
                       <div className="p-6">
                           <div className="mb-2 flex gap-4 items-center">
                               <img className="h-12 w-12 rounded-full border" src={post.author.profile} alt="" />
                               <div className="flex flex-col">
-                                  <h3 className="text-sm font-medium text-black">{post.author.name}</h3>
-                                  <span className="text-sm text-gray-text">{post.location + " - " + post.date}</span>
+                                  <p className="font-medium text-sm text-black">{post.author.name}</p>
+                                  <p className="text-sm text-gray-text">{post.location + " - " + post.date}</p>
                               </div>
                           </div>
                       
-                          <p className="mt-3 font-semibold text-md text-black">{post.title}</p>
+                          <p className="mt-3 font-medium text-sm text-black">{post.title}</p>
                           <p className="text-black text-sm">{post.description}</p>
                           
                           <div className="my-3">

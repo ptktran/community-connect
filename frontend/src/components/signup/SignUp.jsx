@@ -25,9 +25,9 @@ const SignUp = () => {
             </div>
             
             <div class="flex justify-center items-center mt-5">
-                    <button class="bg-blue w-1/6 rounded-lg p-2" type="button"  onclick="handleClick()">
-                        <p class="text-neutral-50 font-bold">Next</p>
-                    </button>
+              <button class="bg-blue w-1/6 rounded-lg p-2" type="button"  onclick="handleClick()">
+                  <p class="text-neutral-50 font-bold">Next</p>
+              </button>
             </div>
         </div>
     )
