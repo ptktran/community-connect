@@ -104,6 +104,11 @@ app.post("/Post/new", async (req, res) => {
     res.json(newPost)
 })
 
+app.get("/Posts", async (req, res) => {
+    const posts = await Post.find();
+    return res.json(posts); 
+})
+
 app.get('/', (res, req) => {
     req.send("API is running")
 })
