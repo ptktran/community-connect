@@ -16,6 +16,8 @@
     "express-oauth2-jwt-bearer": "^1.4.1",
     "express-openid-connect": "^2.16.0",
     "jwks-rsa": "^3.0.1",
+    "body-parser": "^1.20.2",
+    "mongoose": "^7.2.0",
     "nodemon": "^2.0.22"
   }
 }
