@@ -10,13 +10,16 @@ const Home = () => {
       document.title = 'CommunityConnect'
     }, [])
 
-    return (
-        <div className="bg-gray-bg min-h-full pb-10">
-            <NavBar />
-            <Profile />
-            <MiniPost />
-        </div>
-    )
+  return (
+    <>
+    {isAuthenticated ? (
+      <div className="bg-gray-bg h-screen pb-10">
+        <NavBar />
+        <MiniPost />
+      </div>
+    ) : (
+      <Landing />
+    )}
+    </>)
 }
-
 export default Home;

@@ -3,12 +3,52 @@ import React, { useState } from 'react';
 export default function UploadPhoto () {
   const [selectedImage, setSelectedImage] = useState(null)
   const [imageName, setImageName] = useState('')
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0]
-    setSelectedImage(URL.createObjectURL(file))
-    setImageName(file.name);
-    // You can perform further processing or send the file to a server here
-  }
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'YOUR_UPLOAD_PRESET'); // Create an upload preset in your Cloudinary account
+
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/dh86c72qv/image/upload`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Error uploading image to Cloudinary');
+      }
+
+      const data = await response.json();
+      const imageURL = data.secure_url;
+
+      // Save the imageURL to your database using an API call or any other method
+      saveImageToDatabase(imageURL);
+
+      setSelectedImage(imageURL);
+      setImageName(file.name);
+    } catch (error) {
+      console.error('Error uploading image to Cloudinary:', error);
+    }
+  };
+
+  const saveImageToDatabase = async (imageURL) => {
+    try {
+      await fetch('/saveImage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ imageURL }),
+      });
+    } catch (error) {
+      console.error('Error saving image to database:', error);
+    }
+  };
 
   const handleRemoveImage = () => {
     setSelectedImage(null);
