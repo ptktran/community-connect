@@ -1,7 +1,12 @@
 const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
+const { MongoClient } = require('mongodb');
 
+const cors = require('cors');
+const app = express();
+
+app.use(cors());
+const uri = 'mongodb+srv://VincentVinni:lhPIjteRzoHboir3@cluster0.y9yumhy.mongodb.net/CommunityConnect?retryWrites=true&w=majority'
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));;
 app.use(bodyParser.json())
@@ -9,7 +14,7 @@ app.use(bodyParser.json())
 main().catch(err => console.log(err));
 
 async function main() {
-    await mongoose.connect('mongodb+srv://VincentVinni:lhPIjteRzoHboir3@cluster0.y9yumhy.mongodb.net/CommunityConnect?retryWrites=true&w=majority')
+    await mongoose.connect(uri)
 }
 
 const userSchema = new mongoose.Schema({
@@ -35,6 +40,10 @@ const userSchema = new mongoose.Schema({
 
 
 const postSchema = new mongoose.Schema({
+    author: {
+      name: String,
+      email: String
+    },
     title: String, 
     location: String, 
     date: String, 
@@ -85,6 +94,7 @@ app.get("/User/:id", async (req, res) => {
 
 app.post("/Post/new", async (req, res) => {
     const newPost = new Post({
+        author: req.body.author,
         title: req.body.title, 
         location: req.body.location, 
         date: req.body.date, 
@@ -107,5 +117,34 @@ app.get("/Posts", async (req, res) => {
 app.get('/', (res, req) => {
     req.send("API is running")
 })
+
+app.put('/update/:id', async (req, res) => {
+    const { id } = req.params;
+    const fieldName = req.body.fieldName;
+    const fieldValue = req.body.fieldValue; 
+
+    try {
+      const updatedUser = await User.findByIdAndUpdate(id, { [fieldName]: fieldValue }, { new: true });
+      res.json(updatedUser);
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'An error occurred' });
+    }
+  });
+
+  app.get('/find-user/:email', async (req, res) => {
+
+    const fieldValue = req.params.email;
+    
+    const query = { email: fieldValue };
+    const filteredUsers = await User.find(query);
+    if(!filteredUsers) {
+        res.send({error : "No task was found"})
+    }
+    console.log(filteredUsers);
+    res.send(filteredUsers);
+  });
+
+
 
 app.listen(5000, console.log("Server Started at Port 5000"));
