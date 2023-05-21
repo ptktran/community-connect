@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const bodyParser = require("body-parser");
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));;
 app.use(bodyParser.json())
 
@@ -71,6 +73,7 @@ app.post("/User/new", async (req, res) => {
     })
     try {
       await newUser.save()
+    //   console.log(req.body)
       res.json(newUser)
     } catch (error) {
       console.log(error)
@@ -110,7 +113,7 @@ app.get("/Posts", async (req, res) => {
 })
 
 app.get('/', (res, req) => {
-    req.send("API is running")
+    res.send("API is running")
 })
 
 app.listen(5000, console.log("Server Started at Port 5000"));
