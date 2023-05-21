@@ -79,7 +79,7 @@ export default function CreateService() {
           <form className="my-5" onSubmit={handleSubmit} id="serviceForm">
             <h1 className="text-sm">Create a service for your business to start making money 💸</h1>
             <div className="my-3">
-              <label for="service"></label>
+              <label htmlFor="service"></label>
               <input 
                 type="text" 
                 name="title" 
@@ -88,7 +88,7 @@ export default function CreateService() {
                 placeholder="Service name" required/>
             </div>
             <div className="my-3">
-              <label for="service_description"></label>
+              <label htmlFor="service_description"></label>
               <textarea 
                 type="text" 
                 name="description" 
@@ -98,7 +98,7 @@ export default function CreateService() {
             </div>
 
               <div className="my-3">
-              <label for="service" className="text-sm">Cost range for your service</label>
+              <label htmlFor="service" className="text-sm">Cost range for your service</label>
               <div className="flex items-center">
                 <span className="text-md mr-1">$</span>
                 <input 

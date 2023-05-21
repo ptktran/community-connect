@@ -78,7 +78,7 @@ export default function AddPost() {
           <form className="my-5" id="postForm" onSubmit={handleSubmit}>
             <h1 className="text-sm">Posting as <b>{user.name}</b></h1>
             <div className="my-3">
-              <label for="title"></label>
+              <label htmlFor="title"></label>
               <input 
                 type="text" 
                 name="title"
@@ -87,7 +87,7 @@ export default function AddPost() {
                 placeholder="Title" required/>
             </div>
             <div className="my-3">
-              <label for="description"></label>
+              <label htmlFor="description"></label>
               <textarea 
                 type="text" 
                 name="description"
