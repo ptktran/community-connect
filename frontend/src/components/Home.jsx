@@ -7,9 +7,6 @@ const Home = () => {
     return (
         <div>
             <NavBar />
-            <LoginButton />
-            <LogoutButton />
-            <Profile />
             <MiniPost />
         </div>
     )
