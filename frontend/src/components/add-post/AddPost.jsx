@@ -40,7 +40,7 @@ export default function AddPost() {
   const handleSubmit = async (event) => {
     event.preventDefault();
   
-    const currentDate = new Date().toISOString();
+    const currentDate = new Date().toUTCString();
     const formDataWithDate = {
       ...formData,
       date: currentDate,

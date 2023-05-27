@@ -41,7 +41,7 @@ export default function CreateService() {
   const handleSubmit = async (event) => {
     event.preventDefault();
   
-    const currentDate = new Date().toISOString();
+    const currentDate = new Date().toUTCString();
     const formDataWithDate = {
       ...formData,
       date: currentDate,

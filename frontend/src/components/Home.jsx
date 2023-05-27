@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <>
     {isAuthenticated ? (
-      <div className="bg-gray-bg h-screen pb-10">
+      <div className="bg-gray-bg h-full pb-10">
         <NavBar />
         <MiniPost />
       </div>

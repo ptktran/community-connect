@@ -58,9 +58,9 @@ const Navbar = () => {
           <Link to="/profile">
             {isAuthenticated && (
               <li>
-                <a href="#" className="flex space-x-1 text-sm bg-gray-comps p-2 rounded-lg hover:bg-gray-hover transition-color ease duration-150">
+                <a href="#" className="flex items-center space-x-1 text-sm bg-gray-comps p-2 rounded-lg hover:bg-gray-hover transition-color ease duration-150">
                   {user.picture ? (
-                    <img src={user.picture} className="rounded-full w-6" alt="User"></img>
+                    <img src="src/assets/icons/user.svg" className="rounded-full w-6" alt="User"></img>
                   ) : (
                     <img src='src/assets/icons/user.svg'></img>
                   )}

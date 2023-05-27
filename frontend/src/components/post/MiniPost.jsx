@@ -72,12 +72,12 @@ const MiniPost = () => {
         {posts.map((post, index) => 
           <div key={index} className="flex m-auto bg-white max-w-2xl rounded-lg overflow-hidden drop-shadow-md my-5">
             <div className="p-6 w-full">
-              <div className="mb-2 flex gap-4 items-center justify-between">
-                <div className="flex flex-col">
-                    <div className='flex'>
-                        <img className="h-12 w-12 rounded-full border" src={post.author.profile} alt="" />
-                        <p className="font-medium text-sm text-black">{post.author.name}</p>
-                        <p className="text-sm text-gray-text">{post.location + " - " + post.date}</p>
+              <div className="mb-2 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <img className="h-12 w-12 rounded-full" src="src/assets/icons/user.svg" alt="" />
+                    <div>
+                      <p className="font-medium text-sm text-black">{post.author.name}</p>
+                      <p className="text-sm text-gray-text">{post.location + " - " + post.date}</p>
                     </div>
                 </div>
                 {post.min_price ? (
@@ -96,7 +96,11 @@ const MiniPost = () => {
               <p className="text-black text-sm">{post.description}</p>
               
               <div className="my-3">
-                <img className="rounded-lg" src={post.image} alt="" />
+                {post.image ? (
+                  <img className="rounded-lg" src={post.image} alt="" />
+                ) : (
+                  <></>
+                )}
               </div>
 
               <div className="flex justify-start space-x-4 items-center mt-5">
