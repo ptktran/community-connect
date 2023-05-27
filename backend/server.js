@@ -1,13 +1,14 @@
 const express = require('express');
+
+const app = express();
 const mongoose = require('mongoose');
 const { MongoClient } = require('mongodb');
-
-const cors = require('cors');
-const app = express();
-
-app.use(cors());
 const uri = 'mongodb+srv://VincentVinni:lhPIjteRzoHboir3@cluster0.y9yumhy.mongodb.net/CommunityConnect?retryWrites=true&w=majority'
 const bodyParser = require("body-parser");
+const cors = require('cors');
+
+app.use(cors());
+
 app.use(bodyParser.urlencoded({ extended: false }));;
 app.use(bodyParser.json())
 
@@ -24,9 +25,9 @@ const userSchema = new mongoose.Schema({
     isFreelancer: Boolean, 
     isBusiness: Boolean, 
     occupation: String, 
-    location: String}
+    location: String
+  }
 )
-
 
 // {
 //     "name": "Peter Tran",
@@ -54,7 +55,6 @@ const postSchema = new mongoose.Schema({
     likes: Number, 
     comments: Number
 })
-
 
 const User = mongoose.model('User', userSchema, "User")
 const Post = mongoose.model('Post', postSchema, "Post")
@@ -118,33 +118,36 @@ app.get('/', (res, req) => {
     req.send("API is running")
 })
 
+
+app.get('/find-user', async (req, res) => {
+  const a = await User.find({location: "Toronto"}).toArray()
+  return res.json(a)
+});
+
+app.get('/find-user/:email', async (req, res) => {
+
+  const fieldValue = req.params.email;
+  
+  const query = { email: fieldValue };
+  const filteredUsers = await User.find(query);
+  if(!filteredUsers) {
+      res.send({error : "No task was found"})
+  }
+  console.log(filteredUsers);
+  res.send(filteredUsers);
+});
+
 app.put('/update/:id', async (req, res) => {
-    const { id } = req.params;
-    const fieldName = req.body.fieldName;
-    const fieldValue = req.body.fieldValue; 
-
-    try {
-      const updatedUser = await User.findByIdAndUpdate(id, { [fieldName]: fieldValue }, { new: true });
-      res.json(updatedUser);
-    } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'An error occurred' });
-    }
-  });
-
-  app.get('/find-user/:email', async (req, res) => {
-
-    const fieldValue = req.params.email;
-    
-    const query = { email: fieldValue };
-    const filteredUsers = await User.find(query);
-    if(!filteredUsers) {
-        res.send({error : "No task was found"})
-    }
-    console.log(filteredUsers);
-    res.send(filteredUsers);
-  });
-
-
+  try {
+    const postId = req.params.id
+    const updatedLikes = req.body.likes 
+    console.log(req.body)
+    const result = await Post.findByIdAndUpdate(postId, { likes: updatedLikes }, { new: true })
+    res.json(result)
+  } catch (error) {
+    console.log('Error updating: ' + error)
+  }
+})
 
 app.listen(5000, console.log("Server Started at Port 5000"));
+

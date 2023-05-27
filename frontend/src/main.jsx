@@ -9,7 +9,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     domain="https://dev-h5u1zxlhfro6lvy0.us.auth0.com"
     clientId="Z2KTZAdA3rKijPVsSBJgAvqDFc8M0mv2"
     authorizationParams={{
-      redirect_uri: "http://localhost:3000/signup"
+      redirect_uri: 'http://localhost:3000/signup'
     }}
   >
     <App />

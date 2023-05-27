@@ -47,20 +47,20 @@ const Navbar = () => {
 
         {/* Nav Links */}
         <ul className="flex justify-end items-center space-x-3">
-          <Link to="/create-service">
-            <li><a><button className="bg-gray-comps text-sm p-2 rounded-lg hover:bg-gray-hover transition-color ease duration-150">💸 Create service</button></a></li>
-          </Link> 
           <Link to="/add-post">
-            <li><a><img className="hover:bg-gray-hover transition-color ease duration-150 p-1 rounded-lg" src="src/assets/icons/add.svg" alt="Add"></img></a></li> 
+            <li><a><img className="hover:bg-gray-hover transition-color ease duration-150 p-2 rounded-lg" src="src/assets/icons/add.svg" alt="Add"></img></a></li> 
           </Link>
-          <li><a href="#"><img className="hover:bg-gray-hover transition-color ease duration-150 p-1 rounded-lg" src="src/assets/icons/message.svg" alt="Message"></img></a></li>
-          <li><a href="#"><img className="hover:bg-gray-hover transition-color ease duration-150 p-1 rounded-lg" src="src/assets/icons/notification.svg" alt="Notification"></img></a></li>
+          <Link to="/create-service">
+            <li><a><button className="bg-gray-comps text-sm p-2.5 rounded-lg hover:bg-gray-hover transition-color ease duration-150">💸 Create service</button></a></li>
+          </Link> 
+          {/* <li><a href="#"><img className="hover:bg-gray-hover transition-color ease duration-150 p-1 rounded-lg" src="src/assets/icons/message.svg" alt="Message"></img></a></li>
+          <li><a href="#"><img className="hover:bg-gray-hover transition-color ease duration-150 p-1 rounded-lg" src="src/assets/icons/notification.svg" alt="Notification"></img></a></li> */}
           <Link to="/profile">
             {isAuthenticated && (
               <li>
-                <a href="#" className="flex space-x-1 items-center gap-1 text-sm bg-gray-comps p-2 rounded-lg hover:bg-gray-hover transition-color ease duration-150">
+                <a href="#" className="flex items-center space-x-1 text-sm bg-gray-comps p-2 rounded-lg hover:bg-gray-hover transition-color ease duration-150">
                   {user.picture ? (
-                    <img src={user.picture} className="rounded-full w-6" alt="User"></img>
+                    <img src="src/assets/icons/user.svg" className="rounded-full w-6" alt="User"></img>
                   ) : (
                     <img src='src/assets/icons/user.svg'></img>
                   )}
@@ -69,7 +69,6 @@ const Navbar = () => {
               </li>
             )}
           </Link>
-          <LoginButton />
           <LogoutButton/>
         </ul>
       </nav>    
