@@ -1,4 +1,5 @@
 const express = require('express');
+
 const app = express();
 const mongoose = require('mongoose');
 const { MongoClient } = require('mongodb');
@@ -7,6 +8,7 @@ const bodyParser = require("body-parser");
 const cors = require('cors');
 
 app.use(cors());
+
 app.use(bodyParser.urlencoded({ extended: false }));;
 app.use(bodyParser.json())
 
@@ -15,7 +17,6 @@ main().catch(err => console.log(err));
 async function main() {
     await mongoose.connect(uri)
 }
-
 
 const userSchema = new mongoose.Schema({
     name: String,
@@ -27,6 +28,7 @@ const userSchema = new mongoose.Schema({
     location: String
   }
 )
+
 // {
 //     "name": "Peter Tran",
 //     "email": "petertran@gmail.com",
@@ -53,7 +55,6 @@ const postSchema = new mongoose.Schema({
     likes: Number, 
     comments: Number
 })
-
 
 const User = mongoose.model('User', userSchema, "User")
 const Post = mongoose.model('Post', postSchema, "Post")
@@ -117,6 +118,7 @@ app.get('/', (res, req) => {
     req.send("API is running")
 })
 
+
 app.get('/find-user', async (req, res) => {
   const a = await User.find({location: "Toronto"}).toArray()
   return res.json(a)
@@ -148,3 +150,4 @@ app.put('/update/:id', async (req, res) => {
 })
 
 app.listen(5000, console.log("Server Started at Port 5000"));
+

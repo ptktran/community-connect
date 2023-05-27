@@ -1,5 +1,6 @@
 import Navbar from "../Navbar";
 import MiniPost from "../post/MiniPost";
+import Landing from '../landing/Landing'
 import React, { useEffect } from 'react'
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -7,11 +8,12 @@ export default function Profile() {
   const { user, isAuthenticated, isLoading } = useAuth0();
   useEffect(() => {
     document.title = 'Profile'
-  }, []);
+  }, [])
 
   return (
     <>
-      <div className="bg-gray-200 h-full w-full">
+      {isAuthenticated ? (
+        <div className="bg-gray-200 h-full w-full">
         <Navbar />
         <div className="flex m-auto py-10 justify-center space-x-6">
           <div className="bg-white w-1/6 h-fit drop-shadow rounded-lg">
@@ -43,6 +45,9 @@ export default function Profile() {
           
         </div>
       </div>
+      ) : (
+        <Landing />
+      )}
     </>
   )
 }

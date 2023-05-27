@@ -6,8 +6,8 @@ import { Auth0Provider } from "@auth0/auth0-react";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Auth0Provider
-    domain="https://dev-0id2uicgi5udqk1l.us.auth0.com"
-    clientId="E0ZRQMB9VfXkeOFEr65n2bwghc7fNume"
+    domain="https://dev-h5u1zxlhfro6lvy0.us.auth0.com"
+    clientId="Z2KTZAdA3rKijPVsSBJgAvqDFc8M0mv2"
     authorizationParams={{
       redirect_uri: 'http://localhost:3000/signup'
     }}
