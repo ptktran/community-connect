@@ -53,7 +53,8 @@ const postSchema = new mongoose.Schema({
     min_price: Number,
     max_price: Number, 
     likes: Number, 
-    comments: Number
+    comments: Number,
+    likedBy: []
 })
 
 const User = mongoose.model('User', userSchema, "User")
@@ -103,7 +104,8 @@ app.post("/Post/new", async (req, res) => {
         min_price: req.body.min_price, 
         max_price: req.body.max_price, 
         likes: req.body.likes, 
-        comments: req.body.comments
+        comments: req.body.comments,
+        likedBy: req.body.likedBy
     })
     await newPost.save()
     res.json(newPost)
@@ -141,13 +143,26 @@ app.put('/update/:id', async (req, res) => {
   try {
     const postId = req.params.id
     const updatedLikes = req.body.likes 
-    console.log(req.body)
-    const result = await Post.findByIdAndUpdate(postId, { likes: updatedLikes }, { new: true })
+    const updatedLikedBy = req.body.likedBy
+    const result = await Post.findByIdAndUpdate(postId, { likes: updatedLikes, likedBy: updatedLikedBy }, { new: true })
     res.json(result)
   } catch (error) {
     console.log('Error updating: ' + error)
   }
 })
+
+// app.get('/likedBy/:id', async (req, res) => {
+//   try {
+//     const postId = req.params.id
+//     const result = await Post.find(postId); 
+//     res.send(result)
+//   } catch (error) {
+//     console.log('Error: ' + error)
+//   }
+
+// })
+
+
 
 app.listen(5000, console.log("Server Started at Port 5000"));
 
