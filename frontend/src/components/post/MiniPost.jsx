@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth0 } from "@auth0/auth0-react";
+
+
 
 const MiniPost = () => {
-
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
   const [posts, setPosts] = useState([]);
   const [likes, setLikes] = useState(1);
@@ -44,25 +47,37 @@ const MiniPost = () => {
         window.location.href = mailtoLink;
     }
 
-    const handleUpdate = (postId, postLikes) => {
-      setLikes(likes + 1)
-      fetch(`http://localhost:5000/update/${postId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ likes: postLikes + 1 }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // Handle successful update if needed
-          console.log('Post updated:', data);
-        })
-        .catch((error) => {
-          // Handle error if needed
-          console.error('Error updating post:', error);
-        });
-    };
+    async function handleUpdate(postId, postLikes, author) {
+        try {
+            const response = await fetch(`http://localhost:5000/update/${postId}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ likes: postLikes, likedBy: author }),
+          });
+
+          if (response.ok) {
+            const responseData = await json.response();
+            console.log(responseData);
+          } else {
+            throw new Error('put request failed');
+          }
+        } catch (error) {
+          console.log(error);
+        }
+
+        setLikes(postLikes);
+    }
+
+    function handle(likedBy, postId, postLikes, author) {
+      const exists = likedBy.includes(user.name);
+      if (exists) {
+        handleUpdate(postId, postLikes - 1, [])
+      } else {
+        handleUpdate(postId, postLikes + 1, [...likedBy, author])
+      }
+    }
 
 
     return (
@@ -111,7 +126,7 @@ const MiniPost = () => {
                   ) : (
                     <></>
                   )}
-                  <button onClick={() => handleUpdate(post._id, post.likes)}>👍 {post.likes}</button>
+                  <button onClick={() => handle(post.likedBy, post._id, post.likes, user.name)}>👍 {post.likes}</button>
                   <span>💬 {post.comments}</span>
                   {/* <span>👀 {post.seenBy}</span> */}
                 </div>
