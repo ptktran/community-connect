@@ -22,10 +22,10 @@ const userSchema = new mongoose.Schema({
     name: String,
     email: String, 
     age: Number,
-    isFreelancer: Boolean, 
-    isBusiness: Boolean, 
+    account: String,
     occupation: String, 
-    location: String
+    location: String,
+    services: String
   }
 )
 
@@ -70,10 +70,10 @@ app.post("/User/new", async (req, res) => {
         name: req.body.name,
         email: req.body.email,
         age: req.body.age,
-        isFreelancer: req.body.isFreelancer,
-        isBusiness: req.body.isBusiness,
+        account: req.body.account,
         occupation: req.body.occupation,
-        location: req.body.location
+        location: req.body.location,
+        services: req.body.services
     })
     try {
       await newUser.save()
@@ -139,6 +139,22 @@ app.get('/find-user/:email', async (req, res) => {
   res.send(filteredUsers);
 });
 
+app.get('/check-user/:email', async (req, res) => {
+  const email = req.params.email
+  try {
+    const user = await User.findOne({ email })
+
+    if (user) {
+      res.status(200).json({ exists: true })
+    } else {
+      res.status(200).json({ exists: false })
+    }
+  } catch (error) {
+    console.log("Error: ", error)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+})
+
 app.put('/update/:id', async (req, res) => {
   try {
     const postId = req.params.id
@@ -148,6 +164,20 @@ app.put('/update/:id', async (req, res) => {
     res.json(result)
   } catch (error) {
     console.log('Error updating: ' + error)
+  }
+})
+
+app.delete('/delete-user/:email', async (req, res) => {
+  const userToDelete = req.params.email
+  try {
+    const deletedUser = await User.findOneAndDelete({ email: userToDelete})
+    if (deletedUser) {
+      return res.json({ message: 'User deleted successfully.', user: deletedUser });
+    } else {
+      return res.status(404).json({ message: 'User not found.'})
+    }
+  } catch (err) {
+    return res.status(500).json({ message: 'Could not delete.', error: err.message })
   }
 })
 

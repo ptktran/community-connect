@@ -1,13 +1,22 @@
-import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import React, { useState } from "react";
+// import { useAuth } from "../auth/AuthContext"
+import { useNavigate, Link } from  'react-router-dom'
+import { useClerk, useAuth } from "@clerk/clerk-react";
 
 const LogoutButton = () => {
-  const { logout } = useAuth0();
-
+  const navigate = useNavigate()
+  const { signOut } = useAuth()
+  const logOut = () => {
+    signOut()
+    navigate('/')
+  }
+  
   return (
-    <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin  } })} className="bg-red-500 text-sm text-white p-2 rounded-lg hover:bg-red-500/90 transition-color ease duration-150">
-      Log Out
-    </button>
+    <Link to='/'>
+      <button onClick={logOut} className="bg-red-500 text-sm text-white p-2.5 rounded-lg hover:bg-red-500/90 transition-color ease duration-150">
+        Log Out
+      </button>
+    </Link>
   );
 };
 

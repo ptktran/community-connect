@@ -1,14 +1,17 @@
 import Navbar from "../Navbar";
 import UploadPhoto from "../upload-photo/UploadPhoto";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import React, { useEffect, useState } from 'react'
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth, useUser } from '@clerk/clerk-react'
 
 export default function AddPost() {
   useEffect(() => {
     document.title = 'Create a post'
   }, []);
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { isSignedIn } = useAuth()
+  const navigate = useNavigate()
+  const { user } = useUser()
+
   const [ isSubmitted, setIsSubmitted ] = useState(false)
 
   const defaultAuthor = {
@@ -17,7 +20,7 @@ export default function AddPost() {
   };
   
   const [formData, setFormData] = useState({
-    author: user ? { name: user.name, email: user.email } : defaultAuthor,
+    author: user ? { name: user.fullName, email: user.primaryEmailAddress.emailAddress } : defaultAuthor,
     title: '',
     location: '',
     date: '',
@@ -76,7 +79,7 @@ export default function AddPost() {
           <h1 className="font-sans text-xl font-medium my-2">Create a post</h1>
           <hr></hr>
           <form className="my-5" id="postForm" onSubmit={handleSubmit}>
-            <h1 className="text-sm">Posting as <b>{user.name}</b></h1>
+            <h1 className="text-sm">Posting as <b>{user.fullName}</b></h1>
             <div className="my-3">
               <label htmlFor="title"></label>
               <input 

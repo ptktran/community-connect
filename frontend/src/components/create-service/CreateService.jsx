@@ -1,15 +1,18 @@
 import Navbar from "../Navbar"
 import { Link } from "react-router-dom"
 import UploadPhoto from "../upload-photo/UploadPhoto"
+import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from  'react'
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 export default function CreateService() {
   useEffect(() => {
     document.title = 'Create a service'; // Set the desired title
   }, []);
-  
-  const { user, isAuthenticated, isLoading } = useAuth0();
+
+  const { isSignedIn } = useAuth()
+  const navigate = useNavigate()
+  const { user } = useUser()
   const [ isSubmitted, setIsSubmitted ] = useState(false)
 
   const defaultAuthor = {
@@ -18,7 +21,7 @@ export default function CreateService() {
   };
   
   const [formData, setFormData] = useState({
-    author: user ? { name: user.name, email: user.email } : defaultAuthor,
+    author: user ? { name: user.fullName, email: user.primaryEmailAddress.emailAddress } : defaultAuthor,
     title: '',
     location: '',
     date: '',
@@ -74,7 +77,7 @@ export default function CreateService() {
       <div className="bg-gray-200 h-screen">
         <Navbar />
         <div className="bg-white rounded-lg sm:w-6/6 md:w-3/6 lg:w-2/6 py-6 px-5 m-auto mt-10 drop-shadow">
-          <h1 className="font-sans text-xl font-medium my-2">Create a service for <b>{user.name}</b></h1>
+          <h1 className="font-sans text-xl font-medium my-2">Create a service for <b>{user.fullName}</b></h1>
           <hr></hr>
           <form className="my-5" onSubmit={handleSubmit} id="serviceForm">
             <h1 className="text-sm">Create a service for your business to start making money 💸</h1>

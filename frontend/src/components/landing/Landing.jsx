@@ -1,5 +1,7 @@
 import { useEffect } from "react"
-import LoginButton from "../LoginButton"
+import { SignIn } from "@clerk/clerk-react"
+// import firebase from 'firebase/app'
+// import 'firebase/auth'
 
 export default function Landing() {
   return (
@@ -20,13 +22,11 @@ export default function Landing() {
       </div>
 
       <div className="w-1/2 h-screen bg-white flex justify-center items-center">
-        <div>
-          <div className="my-5">
-            <h1 className="text-2xl font-semibold">Log In or Sign Up</h1>
-            <p>Start connecting by logging in or creating an account</p>
-          </div>
-          <LoginButton buttonText="Let's go →" css="bg-blue text-white w-full p-2.5 rounded-lg hover:bg-blue/90 transition-color ease duration-150"/>
-        </div>
+          <SignIn 
+            variables={{
+              colorPrimary: 'blue'
+            }}
+          />
       </div>
     </div>
   )

@@ -1,35 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth, useUser } from '@clerk/clerk-react'
 import axios from 'axios';
 
 const SignUp = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState([])
-  const { user, isAuthenticated, isLoading } = useAuth0()
-
-  useEffect(() => {
-    const checkUserExists = async () => {
-      if (isAuthenticated && user.email) {
-        try {
-          const response = await axios.get(`http://localhost:5000/find-user/${user.email}`);
-          setUserInfo(response.data);
-        } catch (error) {
-          console.log('Error: ', error);
-        }
-      }
-    };
-    checkUserExists();
-  }, []);
-
-  console.log(userInfo)
-  useEffect(() => {
-    if (userInfo.length > 0) {
-      navigate('/');
-    } else {
-      navigate('/signup');
-    }
-  }, []);
+  const { isSignedIn } = useAuth()
+  const { user } = useUser()
+  const [coords, setCoords] = useState(null)
 
   const [formData, setFormData] = useState({
     age: null,
@@ -44,20 +23,53 @@ const SignUp = () => {
     setFormData({...formData, [name]: value})
   }
   
+  async function getCoords() {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => resolve(position.coords),
+          error => reject(error)
+        );
+      } else {
+        reject(new Error("Geolocation is not supported."));
+      }
+    });
+  }
+  
+  async function getLocation(latitude, longitude) {
+    const response = await fetch(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`);
+    const data = await response.json(); 
+    return `${data.address.city}, ${data.address.state}`
+  }
+
+  const handleLocation = async () => {
+    try {
+      const position = await getCoords();
+      setCoords(position);
+  
+      const city = await getLocation(position.latitude, position.longitude);
+      setFormData({ ...formData, location: city });
+    } catch (error) {
+      console.error('Error getting coordinates:', error);
+    }
+  }
+
   const handleSubmit = async (event) => {
       event.preventDefault()
       try {
-        if (isAuthenticated) {
+        if (isSignedIn) {
           const payload = {
-            name: user.name,
-            email: user.email, 
+            name: user.fullName,
+            email: user.primaryEmailAddress.emailAddress, 
             age: formData.age,
             account: formData.account,
             occupation: formData.occupation, 
-            location: formData.location
+            location: formData.location,
+            services: formData.services
           }
           const { data } = await axios.post('http://localhost:5000/User/new', payload);
-          navigate('/');
+          console.log('reached api');
+          window.location.reload()
         }
       } catch(error) {
         console.log(error.message);
@@ -68,10 +80,8 @@ const SignUp = () => {
     <form onSubmit={handleSubmit}>
       <div className="wrapper">
         <div className="flex justify-center mt-20 mb-10">
-          {(isAuthenticated && user.name) ? (
-            <h2 className="inter font-bold text-3xl">Tell us more about yourself, <span className="hover:text-blue">{user.name}</span></h2>
-          ) : (
-            <h2 className="inter font-bold text-3xl">Tell us more about <span className="hover:text-blue">yourself</span></h2>
+          {(isSignedIn && user.fullName) && (
+            <h2 className="inter font-bold text-3xl cursor-default">Tell us more about yourself, <span className="hover:text-blue">{user.fullName}</span></h2>
           )}
         </div>
         
@@ -103,36 +113,43 @@ const SignUp = () => {
         </div>
 
         <div className="flex flex-wrap justify-center items-center mt-10 h-full">
-            <div className="flex flex-col w-1/4">
+            <div className="flex flex-col w-2/4">
+              <div className="mb-5 items-center w-full flex space-x-4">
                 <input 
-                  className="mb-5 focus:outline-none bg-gray-comps p-3 rounded-lg" 
-                  name="age"
-                  type="number"
-                  onChange={handleInputChange}
-                  placeholder="Age"/> 
-                <input 
-                  className="mb-5 focus:outline-none bg-gray-comps p-3 rounded-lg" 
-                  name="occupation"
-                  type="text"
-                  onChange={handleInputChange}
-                  placeholder="Occupation"/> 
-                <input 
-                  className="mb-5 focus:outline-none bg-gray-comps p-3 rounded-lg" 
+                  className="focus:outline-none bg-gray-comps p-3 rounded-lg w-3/4 border-gray-text border" 
                   name="location"
-                  type="text" 
+                  type="text"
+                  value={formData.location} 
                   onChange={handleInputChange}
-                  placeholder="City, State/Country"/> 
-                <input 
-                  className="mb-5 focus:outline-none bg-gray-comps pb-44 px-3 rounded-lg h-60" 
-                  name="services"
-                  type="text" 
-                  onChange={handleInputChange}
-                  placeholder="Services offered"/> 
+                  placeholder="Your neighborhood" disabled/> 
+                <button onClick={handleLocation} className="bg-blue hover:bg-blue/90 rounded-lg w-1/4 p-3 text-white font-bold ease duration-150">Get location</button>
+              </div>
+              <input 
+                className="mb-5 focus:outline-none bg-gray-comps p-3 rounded-lg border-gray-text border" 
+                name="age"
+                type="number"
+                value={formData.age}
+                onChange={handleInputChange}
+                placeholder="Age" required/> 
+              <input 
+                className="mb-5 focus:outline-none bg-gray-comps p-3 rounded-lg border-gray-text border" 
+                name="occupation"
+                type="text"
+                value={formData.occupation}
+                onChange={handleInputChange}
+                placeholder="Occupation" required/> 
+              <input 
+                className="mb-5 focus:outline-none bg-gray-comps pb-44 px-3 rounded-lg h-60 border-gray-text border" 
+                name="services"
+                type="text"
+                value={formData.services} 
+                onChange={handleInputChange}
+                placeholder="Services offered"/> 
             </div>
         </div>
         
         <div className="flex justify-center items-center mt-5">
-          <button type='submit' className="bg-blue hover:bg-blue/90 w-1/6 rounded-lg p-2 text-neutral-50 font-bold ease duration-150">Next</button>
+          <button type='submit' className="bg-blue hover:bg-blue/90 w-1/6 rounded-lg p-3 font-bold text-neutral-50 ease duration-150">Let's go <span className="font-light">➜</span></button>
         </div>
       </div>
     </form>

@@ -1,25 +1,10 @@
 import { Link } from "react-router-dom"
-import LogoutButton from "./LogoutButton";
-import LoginButton from "./LoginButton";
-import { useAuth0 } from "@auth0/auth0-react";
+import LogoutButton from './LogoutButton'
+import { useUser, useAuth } from '@clerk/clerk-react'
 
 const Navbar = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
-
-  if (isLoading) {
-    return <div>Loading ...</div>;
-  }
-
-  // return (
-  //   isAuthenticated && (
-  //     <div>
-  //       <img src={user.picture} alt={user.name} />
-  //       <h2>{user.name}</h2>
-  //       <p>{user.email}</p>
-  //     </div>
-  //   )
-  // )
-
+  const { isSignedIn } = useAuth()
+  const { user } = useUser()
   return (
     // <body className="bg-gray-200 h-screen">
       <nav className="bg-white py-2 px-4 w-full flex justify-between items-center">
@@ -55,20 +40,14 @@ const Navbar = () => {
           </Link> 
           {/* <li><a href="#"><img className="hover:bg-gray-hover transition-color ease duration-150 p-1 rounded-lg" src="src/assets/icons/message.svg" alt="Message"></img></a></li>
           <li><a href="#"><img className="hover:bg-gray-hover transition-color ease duration-150 p-1 rounded-lg" src="src/assets/icons/notification.svg" alt="Notification"></img></a></li> */}
-          <Link to="/profile">
-            {isAuthenticated && (
+            {user && (
               <li>
-                <a href="#" className="flex items-center space-x-1 text-sm bg-gray-comps p-2 rounded-lg hover:bg-gray-hover transition-color ease duration-150">
-                  {user.picture ? (
-                    <img src="src/assets/icons/user.svg" className="rounded-full w-6" alt="User"></img>
-                  ) : (
-                    <img src='src/assets/icons/user.svg'></img>
-                  )}
-                  <span>{user.name}</span>
-                </a>
+                <Link to="/profile" className="flex items-center space-x-1 text-sm bg-gray-comps p-2 rounded-lg hover:bg-gray-hover transition-color ease duration-150">
+                  <img src={user.imageUrl} className="rounded-full w-6" alt="User"></img>
+                  <span>{user.fullName}</span>
+                </Link>
               </li>
             )}
-          </Link>
           <LogoutButton/>
         </ul>
       </nav>    

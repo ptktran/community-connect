@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth0 } from "@auth0/auth0-react";
-
-
+import { useUser, useAuth } from "@clerk/clerk-react";
 
 const MiniPost = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user } = useUser();
 
   const [posts, setPosts] = useState([]);
   const [likes, setLikes] = useState(1);
@@ -15,16 +13,19 @@ const MiniPost = () => {
       try {
         const response = await fetch('http://localhost:5000/Posts');
         const data = await response.json();
+  
+        data.sort((a, b) => new Date(b.date) - new Date(a.date));
+  
         setPosts(data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
     };
-
+  
     fetchPosts();
-  }, [likes]); 
-
+  }, [likes]);
+  console.log(posts)
     async function postRequest(url, jsonData) {
         const options = {
             method: 'POST',
@@ -71,7 +72,7 @@ const MiniPost = () => {
     }
 
     function handle(likedBy, postId, postLikes, author) {
-      const exists = likedBy.includes(user.name);
+      const exists = likedBy.includes(user.fullName);
       if (exists) {
         handleUpdate(postId, postLikes - 1, [])
       } else {
@@ -83,16 +84,16 @@ const MiniPost = () => {
     return (
     <>   
       {posts 
-      ? (<div>
+      ? (<div className="py-5">
         {posts.map((post, index) => 
-          <div key={index} className="flex m-auto bg-white max-w-2xl rounded-lg overflow-hidden drop-shadow-md my-5">
+          <div key={index} className="flex m-auto bg-white max-w-3xl rounded-lg overflow-hidden drop-shadow-md my-3">
             <div className="p-6 w-full">
               <div className="mb-2 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <img className="h-12 w-12 rounded-full" src="src/assets/icons/user.svg" alt="" />
                     <div>
                       <p className="font-medium text-sm text-black">{post.author.name}</p>
-                      <p className="text-sm text-gray-text">{post.location + " - " + post.date}</p>
+                      <p className="text-sm text-gray-text">{post.date}</p>
                     </div>
                 </div>
                 {post.min_price ? (
@@ -126,7 +127,7 @@ const MiniPost = () => {
                   ) : (
                     <></>
                   )}
-                  <button onClick={() => handle(post.likedBy, post._id, post.likes, user.name)}>👍 {post.likes}</button>
+                  <button onClick={() => handle(post.likedBy, post._id, post.likes, user.fullName)}>👍 {post.likes}</button>
                   <span>💬 {post.comments}</span>
                   {/* <span>👀 {post.seenBy}</span> */}
                 </div>
